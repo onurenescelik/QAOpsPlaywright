@@ -1,0 +1,128 @@
+--------------------------------------KOMUTLAR-------------------------------------
+- npm init playwright -> playwright structor da bir proje create etmemize yarar. projeye baslarken ilk bu yapılır. Butun otomasyon dependies'leri yuklemis olur.
+Bu komut  icin oncesinde node.js kurulmus ve path'e eklenmis olmalı
+
+- npx playwright test -> testleri calıstırmak ıcın ihtiyacımız olan komut
+
+-npx playwright test --ui      
+
+-npx playwright test 3-lls.spec.js --debug   -> debug modda calıstırır
+
+-npx playwright codegen https://rahulshettyacademy.com/angularpractice/  -> url'e gidip temel test yazdırtılabilir.
+
+- api debug modda calıstırma -> package.json'da "scripts" tanımlanır -> kodun incelenecek alanına breakpoint koyulur -> >Debug: Debug npm Script -> search kısmından(command+shift+P)
+
+-npx playwright test --grep @QW  -> test method isimlerine göre çalıştırma
+
+-npx playwright test tests/ClientAppPO.spec.js --config playwright.config1.js  -> spesifik oluşturulan config dosyası ile çalıştırılması için
+
+-npx playwright test tests/ClientAppPO.spec.js --config playwright.config1.js --project=safari -> config içinde oluşturulan özel test ayarları için
+
+- Excel yuklenmesi için paketi kurulduktan sonra projeye yuklemek:
+*cd playwright_test
+*npm install exceljs --savedev
+
+- allure report:
+npx playwright test --grep @Web --reporter=line,allure-playwright
+allure generate ./allure-results --clean   
+allure open ./allure-report   
+
+- package json
+scripts alanından komutlara ozel bir isim atayıp hatırlamaya gerek kalmadan direkt calıstırabiliriz
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+- https://chromewebstore.google.com/detail/selectorshub/ndgimibanhlabgdgjcpbbndiehljcpfh?pli=1 -> path bulurken kolaylık olması adına bir eklenti
+
+-  await page.locator("[style*='block']"); // yıldız oldugunda partial oalrak alıyor yani devamı olabilir.
+
+- first().textContent() -> first methodu ilkini alır
+    nth(0).textContent() -> nth(0) ilk buldugunu alır
+
+
+-  page.locator(".card-body a") -> (value karsılıgı.alttakiTagName)
+
+-Promise.all([  // işlemlerin paralel çalışılması gerekiyorsa. Burada yeni sayfaya geçileceği için önceden veya sonradan bunu bildiremiyoruz eşzamansız paralel hareket etmek gerek.
+
+- textContent() - inputValue() -> Elementin içindeki yazı mı, yoksa kutunun içine yazılan değer mi?
+
+- async({browser}) ve async({page}) farkı -> browser da child window var ise kullanılır. Tek bir page'de olan testlerde genelde page kullanılır.
+
+-//products.nth(i) dinamik locator -> sonuna .locator ile onun childlarına ulaşılanbiliyor (bkz. ClientApp.spec.js)
+- `//abbr[text()='${day}']` -> dinamik deger
+- page.locator("h3:has-text('ZARA COAT 3')") -> h3 tag'ında ZARA COAT 3 text'ine bakar (bkz. ClientApp.spec.js)
+
+- pressSequentially() methodu teker teker harflerin girilmesini sağlar
+
+-dropdown -> selectOption('27') kullanılır
+
+- bir tabloda toplam satır sayısını alma -> tbody tr  -> parent child tag alırken bosluk bırakılarak alınır -> page.locator('tbody tr')
+
+- //radiobutton veya checkbox olan elementlerde click dışında check methoduda kullanılabilir.
+- //select tag'ına sahipse selectoption kullanılabilir.
+-await page.locator("app-card").filter({ hasText: 'Nokia Edge'}).getByRole("button").click(); -> 
+-> locator("").filter({ hasText: 'Nokia Edge'}) burada filter, locator için birden fazla element bulunduğunda istenileni seçmek için filtreleme yapmamızı sağlar
+-> getByRole("button") burayı -> getByRole("button",{name:'Add'}) olarak yazmadık çünkü zaten bu locator da bir tane buton var
+    
+- page.on('dialog', dialog => dialog.accept()); ->  //js popup oldugu durumda bu sekilde ok veya cancel edilebilir. oncesinde bir aksyion olacagı haber verilir
+    
+-const framesPage = page.frameLocator('#courses-iframe'); -> // iframe oldugu durumda kullanılması gereken method
+
+- await framesPage.locator("li a[href*='lifetime-access']:visible").click(); ->  //visible: 2 tane element bulundu ama biri hidden bu durumda visible olanı sadece almak için bu sekilde kullanılır
+
+- console.log(textCheck.split(" ")[1]); ->  //text: Join 13,522 Happy Subscibers! burada boslukları index olarak kullandırıp sadece sayıyı çekmek için 1. index'i aldık.
+
+- test classınnın heerhangi birinde test'in üstüne -> test.describe.configure({mode:'parallel'}); koyuldugunda paralel calıstırıe o class'ı
+
+- test classında olan bütün testler birbirine bağlıysa yani biri fail oldugunda diğerinin calısmasının mantıgı yoksa ve skipped olmasını istiyorsa -> test.describe.configure({mode:'serial'});
+
+-----------------------------------------------AZURE-----------------------------------------------
+
+az role assignment create --assignee "a6f451ed-6a57-4536-a132-85275d4921ef" --role "Storage Blob Data Contributor" --scope "$(az storage account show --name pwstrgplaywrightonure983 --resource-group playwright-onur-rg --query id -o tsv)"
+-----------------------------------------------LOCATOR-----------------------------------------------
+-Id varsa -> css: tagname#id veya #id
+-class attribute varsa -> css: tagname.class veya .class
+-herhangi bit attribute için -> css: tagname[attribute='value'] veya [attribute='value'] -> orn: button[routerlink*=myorders]
+-parent to child yontemi ile alma -> css: parenttagname childcss -> orn: .hero-primary , .em-spacer-1 .ng-star-inserted , tbody tr th
+-text tabanlı locator yazmak için -> text=''
+
+-//placeHolder tag'ı varsa getByPlaceholder bu method da kullanılabilir
+-//getByRole bu method ile sayfada olan button vs(method içinde öneriliyor) alanları için locate almadan kullanılabilir.
+-//getByText sayfada olan text'i getir -> bütün sayfayı tarayıp girilen texti sayfada bulur
+-getByLabel() -> //Label tag'ı olan elementlerde kullanılır
+
+
+
+
+-----------------------------------------------
+
+-----------------------------------------------Best Practise-----------------------------------------------
+
+--------------------Date------------------------------------------
+function getFormattedDate(offsetDays = 0) {
+    const date = new Date();
+    date.setDate(date.getDate() + offsetDays);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
+çağırırken(orn.:yarın): const today = getFormattedDate(1);
+----------------------------------------------------------------------
+
+mentor@rahulshettyacademy.com -> for interview questions
+
+----------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
