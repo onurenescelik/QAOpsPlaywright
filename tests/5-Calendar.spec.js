@@ -13,7 +13,7 @@ test("Calendar Validations", async({page}) =>{
     await page.getByText(year).click();
     await page.locator(".react-calendar__year-view__months__month").nth(monthNumber).click();
     await page.locator("//abbr[text()='"+date+"']").click();
-
+    //fixes calendar
     //const value = await page.locator("input[name='date']").inputValue();
     
     const formattedDate =
